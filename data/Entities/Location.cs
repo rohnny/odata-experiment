@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace data.Entities
 {
+    [Table("Location")]
     public class Location
     {
         public Location()
@@ -10,6 +12,7 @@ namespace data.Entities
             DepartmentLocation = new HashSet<DepartmentLocation>();
         }
 
+        [Key]
         public int Id { get; set; }
         public string LocationName { get; set; }
 

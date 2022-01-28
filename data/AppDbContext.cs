@@ -1,5 +1,5 @@
+using System.Data.Entity;
 using data.Entities;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 
 namespace data
@@ -8,7 +8,7 @@ namespace data
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public AppDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
         }
 
@@ -18,22 +18,17 @@ namespace data
         public virtual DbSet<DepartmentLocation> DepartmentLocation { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-            base.OnModelCreating(builder);
+            modelBuilder.Entity<Department>()
+                .HasMany(e => e.DepartmentLocation)
+                .WithRequired(e => e.Department)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Location>()
+                .HasMany(e => e.DepartmentLocation)
+                .WithRequired(e => e.Location)
+                .WillCascadeOnDelete(false);
         }
-        // protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        // {
-        //     modelBuilder.Entity<Department>()
-        //         .HasMany(e => e.DepartmentLocation)
-        //         .WithRequired(e => e.Department)
-        //         .WillCascadeOnDelete(false);
-        //
-        //     modelBuilder.Entity<Location>()
-        //         .HasMany(e => e.DepartmentLocation)
-        //         .WithRequired(e => e.Location)
-        //         .WillCascadeOnDelete(false);
-        // }
     }
 }

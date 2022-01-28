@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -49,14 +48,14 @@ namespace api
             services.ConfigureExternalCookie(options => { options.Cookie.SameSite = SameSiteMode.None; });
 
             // database
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("AppDbConnection")));
+            var connStr = Configuration.GetConnectionString("AppDbConnection");
+            services.AddScoped(_ => new AppDbContext(connStr));
 
             // services / providers
             services.AddScoped<IUserService, UserService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddControllers();
         }
@@ -81,12 +80,6 @@ namespace api
             app.UseHsts();
 
             app.UseCors(AllowAllOrigin);
-
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetService<AppDbContext>();
-                dbContext.Database.Migrate();
-            }
 
             app.UseHttpsRedirection();
             app.UseRouting();

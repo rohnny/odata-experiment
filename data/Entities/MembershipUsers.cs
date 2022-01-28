@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace data.Entities
 {
+    [Table("MembershipUsers")]
     public class MembershipUsers
     {
         public MembershipUsers()
@@ -12,6 +13,7 @@ namespace data.Entities
             Departments = new HashSet<MembershipDepartment>();
         }
 
+        [Key]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
