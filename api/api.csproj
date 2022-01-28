@@ -8,16 +8,25 @@
         <UserSecretsId>5291C8A6-D248-4984-8F48-91B2ECEC1E1A</UserSecretsId>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="EntityFramework" Version="6.4.4" />
         <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.7" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.13">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
         <PackageReference Include="Figgle" Version="0.4.0" />
         <PackageReference Include="NLog" Version="4.7.13" />
         <PackageReference Include="NLog.Extensions.Hosting" Version="1.7.4" />
         <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\data\data.csproj" />
+      <ProjectReference Include="..\services\services.csproj" />
     </ItemGroup>
 </Project>
